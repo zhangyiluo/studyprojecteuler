@@ -1,6 +1,6 @@
 import java.lang.Math;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.math.BigInteger;
 
 /**
@@ -216,7 +216,6 @@ public class PlayPE {
 
 	public static long PE8() {
 		long maxvalue = 0, tmpvalue = 0;
-		int location = 0;
 		StringBuffer str = new StringBuffer();
 		str.append("73167176531330624919225119674426574742355349194934"
 				+ "96983520312774506326239578318016984801869478851843"
@@ -246,7 +245,6 @@ public class PlayPE {
 					* Integer.parseInt(String.valueOf(str.charAt(i)));
 			if (tmpvalue > maxvalue) {
 				maxvalue = tmpvalue;
-				location = i;
 			}
 		}
 		return maxvalue;
@@ -331,20 +329,17 @@ public class PlayPE {
 	/**
 	 * 
 	 * 最大公约数
-	 * 
-	 * @param int
-	 *            a, int b
+	 * 辗转相除法。 
+	 * @param int a, int b
 	 * @return int 最大公约数
 	 */
 	public static int MaxDivid2(int m, int n) {
 		int r;
-
 		while (n != 0) {
 			r = m % n;
 			m = n;
 			n = r;
 		}
-
 		return m;
 	}
 
