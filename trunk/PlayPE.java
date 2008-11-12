@@ -15,7 +15,7 @@ public class PlayPE {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		System.out.print(PE48());
+		System.out.print(PE07());
 	}
 
 	/**
@@ -27,8 +27,9 @@ public class PlayPE {
 		for (int i = 1; i <= 1000; i++) {
 			sum = BigInteger.valueOf(i).pow(i).add(sum);
 		}
-		return sum.toString().substring(sum.toString().length()-10);
+		return sum.toString().substring(sum.toString().length() - 10);
 	}
+
 	/**
 	 * Problem 25 求Fibonacci序列
 	 * 
@@ -45,7 +46,6 @@ public class PlayPE {
 	}
 
 	public static BigInteger Fibonacci(int n) {
-		// BigInteger result = BigInteger.valueOf(0);
 		if (n == 30) {
 			return BigInteger.valueOf(832040);
 		} else if (n == 31) {
@@ -53,22 +53,21 @@ public class PlayPE {
 		} else {
 			return Fibonacci(n - 1).add(Fibonacci(n - 2));
 		}
-		// return result;
 	}
 
 	public static BigInteger Fibonacci2(int n) {
-		BigInteger result = BigInteger.valueOf(0);
 		BigInteger a = BigInteger.valueOf(1);
 		BigInteger b = BigInteger.valueOf(1);
 		BigInteger c = BigInteger.valueOf(0);
-		
-		for (int i=2 ; i<n;i++){
+
+		for (int i = 2; i < n; i++) {
 			c = a.add(b);
 			a = b;
 			b = c;
-		} 
+		}
 		return c;
 	}
+
 	/**
 	 * Problem 13 Work out the first ten digits of the sum of the following
 	 * one-hundred 50-digit numbers.
@@ -243,7 +242,7 @@ public class PlayPE {
 	 * exactly one Pythagorean triplet for which a + b + c = 1000. Find the
 	 * product abc.
 	 */
-	public static long PE9() {
+	public static long PE09() {
 		long result = 0;
 		for (int i = 1; i < 1000; i++)
 			for (int j = 1; j < 1000; j++)
@@ -263,7 +262,7 @@ public class PlayPE {
 	 * 想需求char转换成int的方法，实际上想法是错的！8个位是不能转成16个位去理解的。要先变成字符串，再变成整数。
 	 */
 
-	public static long PE8() {
+	public static long PE08() {
 		long maxvalue = 0, tmpvalue = 0;
 		StringBuffer str = new StringBuffer();
 		str.append("73167176531330624919225119674426574742355349194934"
@@ -300,29 +299,68 @@ public class PlayPE {
 	}
 
 	/**
+	 * By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can
+	 * see that the 6th prime is 13. What is the 10001st prime number?
+	 * 题意：寻找第10001个质数
+	 * 
+	 * @param long
+	 *            a
+	 * @return true/false
+	 */
+	public static int PE07() {
+		int a = 0;
+		long j = 0;
+		for (a = 1; a <= Long.MAX_VALUE; a++) {
+			if (isPrime(a))
+				if (++j == 10001)
+					break;
+		}
+		return a;
+	}
+
+	/**
+	 * 判断是否质数prime
+	 */
+	public static boolean isPrime(int n) {
+		int r = 0;
+		if (n == 1)
+			return false; // 1非质数。
+		else if (n < 4)
+			return true; // 2,3是质数。
+		else if (n % 2 == 0)
+			return false; // 偶数非质数。
+		else if (n < 9)
+			return true; // 排除了1，2，3，4，6，8，剩下的5，7是质数。
+		else if (n % 3 == 0)
+			return false; // 被3整除也非质数。
+		else {
+			r = (int) Math.floor(Math.sqrt(n));
+			int f = 5;
+			while (f <= r) {
+				if (n % f == 0)
+					return false;
+				if (n % (f + 2) == 0)
+					return false;
+				f = f + 6;
+			}
+			return true;
+		}
+	}
+
+	/**
 	 * A palindromic number reads the same both ways. The largest palindrome
 	 * made from the product of two 2-digit numbers is 9009 = 91 99. Find the
 	 * largest palindrome made from the product of two 3-digit numbers.
 	 * 寻找3位数相乘后最大的回文数。 思路：从100循环乘到999；将结果按位拆分并且回文组合比较。 按位取对数。
 	 */
-	public static long PE4() {
+	public static long PE04() {
 		long x = 0;
 		long r = 0;
-		for (int m = 913; m == 913; m++) {
-			for (int l = 993; l == 993; l++) {
+		for (int m = 100; m < 1000; m++) {
+			for (int l = 100; l < 1000; l++) {
 				x = m * l;
-				long y = 0;
-				long n = (long) Math.floor(Math.log10(x));
-
-				for (long i = n, j = 0; i >= 0; i--, j++) {
-					long a = 0;
-					a = (long) Math.floor(x / Math.pow(10, i));
-					y = y + (long) Math.floor(a * Math.pow(10, j));
-					x = x - a * (long) Math.round(Math.pow(10, i));
-				}
-				if ((m * l) == y) {
-					r = y;
-					// System.out.print(m + ":" + l);
+				if (isPalindromicNumber(x) && x > r) {
+					r = x;
 				}
 			}
 		}
@@ -334,7 +372,7 @@ public class PlayPE {
 	 * The prime factors of 13195 are 5, 7, 13 and 29. What is the largest prime
 	 * factor of the number 600851475143 ?
 	 */
-	public static void PE3() {
+	public static void PE03() {
 		long i;
 		double n = 6.00851475143E11;
 
@@ -350,7 +388,7 @@ public class PlayPE {
 
 	// 1,2,3,4,5,6,7,8,9,10...
 
-	static int PE5() {
+	public static int PE05() {
 		int c = 1;
 		for (int i = 2; i < 20; i++) {
 			c = c * i / MaxDivid(c, i);
@@ -393,7 +431,7 @@ public class PlayPE {
 		return m;
 	}
 
-	public static String PE6() {
+	public static String PE06() {
 		double sum1 = 0;
 		double sum2 = 5050;
 		for (int i = 1; i <= 100; i++) {
@@ -403,7 +441,7 @@ public class PlayPE {
 		return df.format(Math.pow(sum2, 2) - sum1);
 	}
 
-	public int PE1() {
+	public static int PE01() {
 		int x = 0;
 		for (int i = 1; i < 1000; i++) {
 			if ((i % 3 == 0) || (i % 5 == 0)) {
@@ -418,7 +456,7 @@ public class PlayPE {
 	 * 
 	 * @return
 	 */
-	public static long PE2() {
+	public static long PE02() {
 		long x = 0;
 		long a = 1;
 		long b = 2;
@@ -433,4 +471,26 @@ public class PlayPE {
 		return x;
 	}
 
+	/**
+	 * 是否回文数字
+	 * 
+	 * @param long
+	 *            m
+	 * @return ture/false
+	 */
+	public static boolean isPalindromicNumber(long m) {
+		long n = (long) Math.floor(Math.log10(m));
+		long y = 0;
+		long x = m;
+		for (long i = n, j = 0; i >= 0; i--, j++) {
+			long a = 0;
+			a = (long) Math.floor(x / Math.pow(10, i));
+			y = y + (int) Math.floor(a * Math.pow(10, j));
+			x = x - a * (long) Math.round(Math.pow(10, i));
+		}
+		if (m == y) {
+			return true;
+		}
+		return false;
+	}
 }
