@@ -1,6 +1,5 @@
 import java.lang.Math;
-import java.text.DecimalFormat;
-//import java.util.ArrayList;
+import java.text.DecimalFormat; //import java.util.ArrayList;
 import java.math.BigInteger;
 
 /**
@@ -16,14 +15,64 @@ public class PlayPE {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		System.out.print(PE13());
+		System.out.print(PE48());
 	}
 
 	/**
+	 * Problem 48 求Fibonacci序列
+	 * 
+	 */
+	public static String PE48() {
+		BigInteger sum = BigInteger.valueOf(0);
+		for (int i = 1; i <= 1000; i++) {
+			sum = BigInteger.valueOf(i).pow(i).add(sum);
+		}
+		return sum.toString().substring(sum.toString().length()-10);
+	}
+	/**
+	 * Problem 25 求Fibonacci序列
+	 * 
+	 */
+	public static long PE25() {
+		long result = 0;
+		for (int i = 10; i < 10000; i++) {
+			if (Fibonacci2(i).toString().length() == 1000) {
+				result = i;
+				break;
+			}
+		}
+		return result;
+	}
+
+	public static BigInteger Fibonacci(int n) {
+		// BigInteger result = BigInteger.valueOf(0);
+		if (n == 30) {
+			return BigInteger.valueOf(832040);
+		} else if (n == 31) {
+			return BigInteger.valueOf(1346269);
+		} else {
+			return Fibonacci(n - 1).add(Fibonacci(n - 2));
+		}
+		// return result;
+	}
+
+	public static BigInteger Fibonacci2(int n) {
+		BigInteger result = BigInteger.valueOf(0);
+		BigInteger a = BigInteger.valueOf(1);
+		BigInteger b = BigInteger.valueOf(1);
+		BigInteger c = BigInteger.valueOf(0);
+		
+		for (int i=2 ; i<n;i++){
+			c = a.add(b);
+			a = b;
+			b = c;
+		} 
+		return c;
+	}
+	/**
 	 * Problem 13 Work out the first ten digits of the sum of the following
 	 * one-hundred 50-digit numbers.
-	 * 分析:题意是，求100行加起来的结果的前10个数字。每50个数字，应该说字符，转成BigInteger，
-	 * 相加后，转成字符串，取前10位数字。
+	 * 分析:题意是，求100行加起来的结果的前10个数字。每50个数字，应该说字符，转成BigInteger， 相加后，转成字符串，取前10位数字。
 	 * 技巧，每50行取一次计算。
 	 */
 	public static String PE13() {
@@ -129,9 +178,9 @@ public class PlayPE {
 				+ "72107838435069186155435662884062257473692284509516"
 				+ "20849603980134001723930671666823555245252804609722"
 				+ "53503534226472524250874054075591789781264330331690");
-		for (int i = 0; i < str.length(); i=i+50) {
-           String s = str.substring(i, i+50);
-           sum = sum.add(new BigInteger(s,10));
+		for (int i = 0; i < str.length(); i = i + 50) {
+			String s = str.substring(i, i + 50);
+			sum = sum.add(new BigInteger(s, 10));
 		}
 		return sum.toString().substring(0, 9);
 	}
@@ -328,9 +377,10 @@ public class PlayPE {
 
 	/**
 	 * 
-	 * 最大公约数
-	 * 辗转相除法。 
-	 * @param int a, int b
+	 * 最大公约数 辗转相除法。
+	 * 
+	 * @param int
+	 *            a, int b
 	 * @return int 最大公约数
 	 */
 	public static int MaxDivid2(int m, int n) {
