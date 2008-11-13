@@ -12,19 +12,40 @@ import java.math.BigInteger;
 public class PlayPE {
 
 	/**
-	 * @param args 2432902008176640000
-	 * 815915283247897734345611269596115894272000000000
+	 * @param args
+	 *            2432902008176640000
+	 *            815915283247897734345611269596115894272000000000
 	 */
 	public static void main(String[] args) {
-		System.out.print((new BigInteger("335367096786357081410764800000",10).divide(new BigInteger("2432902008176640000",10))));
+		System.out.print(PE28());
 	}
 
 	/**
-	 * Problem 15
-	 * 用大数字计餐死
-	 * 参考答案：137846528820
-	 * http://www.joaoff.com/2008/01/20/a-square-grid-path-problem/
-	 * 迷宫A*算法的翻译 http://blog.vckbase.com/panic/archive/2005/03/20/3778.html
+	 * Problem28
+	 */
+	public static long PE28() {
+		long sum = 1;
+		long m = 1001;
+		long n = (m-1) / 2;
+		for (long i = 1; i <= n; i++) {  //计算右下角
+			sum += Math.pow((2*i-1),2)+2*i;
+		}
+		for (long i = 1; i <= n; i++) {  //计算左下角
+			sum += Math.pow((2*i-1),2)+4*i;
+		}
+		for (long i = 1; i <= n; i++) {  //计算左上角
+			sum += Math.pow((2*i-1),2)+6*i;
+		}
+		for (long i = 1; i <= n; i++) {  //计算右上角
+			sum += Math.pow((2*i+1),2);
+		}
+		return sum;
+	}
+
+	/**
+	 * Problem 15 用大数字计餐死 参考答案：137846528820
+	 * http://www.joaoff.com/2008/01/20/a-square-grid-path-problem/ 迷宫A*算法的翻译
+	 * http://blog.vckbase.com/panic/archive/2005/03/20/3778.html
 	 */
 
 	/**
