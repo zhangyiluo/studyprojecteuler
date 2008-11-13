@@ -12,15 +12,193 @@ import java.math.BigInteger;
 public class PlayPE {
 
 	/**
-	 * @param args
+	 * @param args 2432902008176640000
+	 * 815915283247897734345611269596115894272000000000
 	 */
 	public static void main(String[] args) {
-		System.out.print(PE07());
+		System.out.print((new BigInteger("335367096786357081410764800000",10).divide(new BigInteger("2432902008176640000",10))));
 	}
 
 	/**
-	 * Problem 48 求Fibonacci序列
+	 * Problem 15
+	 * 用大数字计餐死
+	 * 参考答案：137846528820
+	 * http://www.joaoff.com/2008/01/20/a-square-grid-path-problem/
+	 * 迷宫A*算法的翻译 http://blog.vckbase.com/panic/archive/2005/03/20/3778.html
+	 */
+
+	/**
+	 * The following iterative sequence is defined for the set of positive
+	 * integers: n n/2 (n is even) n 3n + 1 (n is odd) Using the rule above and
+	 * starting with 13, we generate the following sequence: 13 40 20 10 5 16 8
+	 * 4 2 1 It can be seen that this sequence (starting at 13 and finishing at
+	 * 1) contains 10 terms. Although it has not been proved yet (Collatz
+	 * Problem), it is thought that all starting numbers finish at 1.
 	 * 
+	 * Which starting number, under one million, produces the longest chain?
+	 * 
+	 * NOTE: Once the chain starts the terms are allowed to go above one
+	 * million.
+	 */
+	public static long PE14() {
+		long max = 0, position = 0;
+		for (long i = 0; i <= 1000000; i++) {
+			long tmp = collatzChain(i);
+			if (max < tmp) {
+				max = tmp;
+				position = i;
+			}
+		}
+		return position;
+	}
+
+	/**
+	 * Collatz链
+	 * 
+	 * @param n
+	 *            被测的数
+	 * @return 链条长度
+	 */
+	public static int collatzChain(long n) {
+		// System.out.print("\n"+n);
+		int many = 1;
+		while (n > 1) {
+			if (n % 2 == 0) { // 偶数的处理
+				n = n / 2;
+			} else
+				n = 3 * n + 1; // 奇数的处理
+			many++;
+			// System.out.print("→"+n);
+		}
+		return many;
+	}
+
+	/**
+	 * Problem 11 What is the greatest product of four adjacent numbers in any
+	 * direction (up, down, left, right, or diagonally) in the 2020 grid?
+	 * 
+	 * 分析：需要字符数组 困难：警惕越过数组临界值。
+	 */
+	public static long PE11() {
+		long result = 0, max = 0;
+		String[][] str = {
+				{ "08", "02", "22", "97", "38", "15", "00", "40", "00", "75",
+						"04", "05", "07", "78", "52", "12", "50", "77", "91",
+						"08" },
+				{ "49", "49", "99", "40", "17", "81", "18", "57", "60", "87",
+						"17", "40", "98", "43", "69", "48", "04", "56", "62",
+						"00" },
+				{ "81", "49", "31", "73", "55", "79", "14", "29", "93", "71",
+						"40", "67", "53", "88", "30", "03", "49", "13", "36",
+						"65" },
+				{ "52", "70", "95", "23", "04", "60", "11", "42", "69", "24",
+						"68", "56", "01", "32", "56", "71", "37", "02", "36",
+						"91" },
+				{ "22", "31", "16", "71", "51", "67", "63", "89", "41", "92",
+						"36", "54", "22", "40", "40", "28", "66", "33", "13",
+						"80" },
+				{ "24", "47", "32", "60", "99", "03", "45", "02", "44", "75",
+						"33", "53", "78", "36", "84", "20", "35", "17", "12",
+						"50" },
+				{ "32", "98", "81", "28", "64", "23", "67", "10", "26", "38",
+						"40", "67", "59", "54", "70", "66", "18", "38", "64",
+						"70" },
+				{ "67", "26", "20", "68", "02", "62", "12", "20", "95", "63",
+						"94", "39", "63", "08", "40", "91", "66", "49", "94",
+						"21" },
+				{ "24", "55", "58", "05", "66", "73", "99", "26", "97", "17",
+						"78", "78", "96", "83", "14", "88", "34", "89", "63",
+						"72" },
+				{ "21", "36", "23", "09", "75", "00", "76", "44", "20", "45",
+						"35", "14", "00", "61", "33", "97", "34", "31", "33",
+						"95" },
+				{ "78", "17", "53", "28", "22", "75", "31", "67", "15", "94",
+						"03", "80", "04", "62", "16", "14", "09", "53", "56",
+						"92" },
+				{ "16", "39", "05", "42", "96", "35", "31", "47", "55", "58",
+						"88", "24", "00", "17", "54", "24", "36", "29", "85",
+						"57" },
+				{ "86", "56", "00", "48", "35", "71", "89", "07", "05", "44",
+						"44", "37", "44", "60", "21", "58", "51", "54", "17",
+						"58" },
+				{ "19", "80", "81", "68", "05", "94", "47", "69", "28", "73",
+						"92", "13", "86", "52", "17", "77", "04", "89", "55",
+						"40" },
+				{ "04", "52", "08", "83", "97", "35", "99", "16", "07", "97",
+						"57", "32", "16", "26", "26", "79", "33", "27", "98",
+						"66" },
+				{ "88", "36", "68", "87", "57", "62", "20", "72", "03", "46",
+						"33", "67", "46", "55", "12", "32", "63", "93", "53",
+						"69" },
+				{ "04", "42", "16", "73", "38", "25", "39", "11", "24", "94",
+						"72", "18", "08", "46", "29", "32", "40", "62", "76",
+						"36" },
+				{ "20", "69", "36", "41", "72", "30", "23", "88", "34", "62",
+						"99", "69", "82", "67", "59", "85", "74", "04", "36",
+						"16" },
+				{ "20", "73", "35", "29", "78", "31", "90", "01", "74", "31",
+						"49", "71", "48", "86", "81", "16", "23", "57", "05",
+						"54" },
+				{ "01", "70", "54", "71", "83", "51", "54", "69", "16", "92",
+						"33", "48", "61", "43", "52", "01", "89", "19", "67",
+						"48" } };
+		for (int i = 0; i <= 19; i++) { // 横向乘
+			for (int j = 0; j <= 16; j++) {
+				result = Integer.valueOf(str[i][j])
+						* Integer.valueOf(str[i][j + 1])
+						* Integer.valueOf(str[i][j + 2])
+						* Integer.valueOf(str[i][j + 3]);
+				// System.out.print(result + "\n");
+				if (max < result)
+					max = result;
+			}
+		}
+
+		for (int i = 0; i <= 16; i++) { // 左对角
+			for (int j = 0; j <= 16; j++) {
+				result = Integer.valueOf(str[i][j])
+						* Integer.valueOf(str[i + 1][j + 1])
+						* Integer.valueOf(str[i + 2][j + 2])
+						* Integer.valueOf(str[i + 3][j + 3]);
+				// System.out.print(result + "\n");
+				if (max < result)
+					max = result;
+			}
+		}
+
+		for (int i = 3; i <= 16; i++) { // 右对角
+			for (int j = 3; j <= 16; j++) {
+				result = Integer.valueOf(str[i][j])
+						* Integer.valueOf(str[i + 1][j - 1])
+						* Integer.valueOf(str[i + 2][j - 2])
+						* Integer.valueOf(str[i + 3][j - 3]);
+				// System.out.print(result + "\n");
+				if (max < result)
+					max = result;
+			}
+		}
+		return max;
+
+	}
+
+	/**
+	 * Problem 10 The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17. Find the
+	 * sum of all the primes below two million. 题意：求200万以下质数和。
+	 * 分析：200万循环，判定是否质数，累加。
+	 */
+	public static BigInteger PE10() {
+		BigInteger sum = BigInteger.valueOf(0);
+		for (long i = 1; i < 2000000; i++) {
+			if (isPrime(i))
+				sum = sum.add(BigInteger.valueOf(i));
+		}
+		return sum;
+	}
+
+	/**
+	 * Problem 48 The series, 1^1 + 2^2 + 3^3 + ... + 10^10 = 10405071317. Find
+	 * the last ten digits of the series, 1^1 + 2^2 + 3^3 + ... + 1000^1000.
+	 * 题意：算式最后十个数字。 分析：用大数字计算，取最后10个字符。
 	 */
 	public static String PE48() {
 		BigInteger sum = BigInteger.valueOf(0);
@@ -31,7 +209,9 @@ public class PlayPE {
 	}
 
 	/**
-	 * Problem 25 求Fibonacci序列
+	 * Problem 25
+	 * 
+	 * Fibonacci序列的第多少个的结果含有1000个数字。
 	 * 
 	 */
 	public static long PE25() {
@@ -45,6 +225,12 @@ public class PlayPE {
 		return result;
 	}
 
+	/**
+	 * 计算第n个Fibonacci序列的结果，
+	 * 
+	 * @param int
+	 * @return BigInteger
+	 */
 	public static BigInteger Fibonacci(int n) {
 		if (n == 30) {
 			return BigInteger.valueOf(832040);
@@ -257,9 +443,9 @@ public class PlayPE {
 
 	/**
 	 * Find the greatest product of five consecutive digits in the 1000-digit
-	 * number. 思考：字符串，逐个位移去计算。 优化：看看未来第5位是否有0，凡是有0在中间的可以跳过中间9个字符窜
-	 * 突然想起StringBuffer,
+	 * number. 思考：字符串，逐个位移去计算。 突然想起StringBuffer,
 	 * 想需求char转换成int的方法，实际上想法是错的！8个位是不能转成16个位去理解的。要先变成字符串，再变成整数。
+	 * 优化：看看未来第5位是否有0，凡是有0在中间的可以跳过中间9个字符窜
 	 */
 
 	public static long PE08() {
@@ -301,11 +487,11 @@ public class PlayPE {
 	/**
 	 * By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can
 	 * see that the 6th prime is 13. What is the 10001st prime number?
-	 * 题意：寻找第10001个质数
+	 * 题意：寻找第10001个质数。
 	 * 
 	 * @param long
 	 *            a
-	 * @return true/false
+	 * @return boolean
 	 */
 	public static int PE07() {
 		int a = 0;
@@ -321,7 +507,7 @@ public class PlayPE {
 	/**
 	 * 判断是否质数prime
 	 */
-	public static boolean isPrime(int n) {
+	public static boolean isPrime(long n) {
 		int r = 0;
 		if (n == 1)
 			return false; // 1非质数。
@@ -417,8 +603,10 @@ public class PlayPE {
 	 * 
 	 * 最大公约数 辗转相除法。
 	 * 
-	 * @param int
-	 *            a, int b
+	 * @param a
+	 *            第一个整数
+	 * @param b
+	 *            第二个整数
 	 * @return int 最大公约数
 	 */
 	public static int MaxDivid2(int m, int n) {
@@ -474,9 +662,9 @@ public class PlayPE {
 	/**
 	 * 是否回文数字
 	 * 
-	 * @param long
-	 *            m
-	 * @return ture/false
+	 * @param m
+	 *            被测整数
+	 * @return boolean
 	 */
 	public static boolean isPalindromicNumber(long m) {
 		long n = (long) Math.floor(Math.log10(m));
