@@ -1,0 +1,48 @@
+/*
+ * All rights reserved by zhangyiluo@126.com 
+ */
+backup.bat
+
+----- begin --------
+echo off 
+
+set SVN_PARENT_PATH=%1
+set BACKUP_DIR=%2
+set CUR_BACKUP_DIR=%BACKUP_DIR%\svnclub-all-backup-%date:~0,4%%date:~5,2%%date:~8,2%
+
+if exist %CUR_BACKUP_DIR% goto pass
+mkdir %CUR_BACKUP_DIR%
+
+:pass
+for /r %SVN_PARENT_PATH% %%I in (.) do @if exist "%%I\conf\svnserve.conf" svnadmin hotcopy "%%~fI" "%CUR_BACKUP_DIR%\%%~nI"
+"%~dp0\rar.exe" a %CUR_BACKUP_DIR%.rar %CUR_BACKUP_DIR% 
+rd /s /q  %CUR_BACKUP_DIR%
+
+:end
+----- end ------
+
+分析：
+这些都是Dos命令，网上关键字「Dos命令大全」
+echo off                                                                                                       
+不显示操作结果
+set SVN_PARENT_PATH=%1
+%1是命令行的第一个参数，【设定】「SVN仓库目录」到环境变量                                                          
+set BACKUP_DIR=%2
+%2是命令行的第二个参数，【设定】「备份主路径」到环境变量，比如SVNBackup
+set CUR_BACKUP_DIR=%BACKUP_DIR%\svnclub-all-backup-%date:~0,4%%date:~5,2%%date:~8,2%    
+取日期【设定】第三个环境变量，产生类似「D:\SVNBackup\svnclub-all-backup-20150412」字符串。%date:~0,4% 是表示取日期的前4位。
+if exist %CUR_BACKUP_DIR% goto pass 
+如果存在目录（字符串相同），就跳到pass段。否则创建目录
+mkdir %CUR_BACKUP_DIR%     
+【创建】目录CUR_BACKUP_DIR
+for /r %SVN_PARENT_PATH% %%I in (.) do @if exist "%%I\conf\svnserve.conf" svnadmin hotcopy "%%~fI" "%CUR_BACKUP_DIR%\%%~nI"
+对每一个子目录【检查】，如果是svn库就【热备】。for命令语法: for /r %%I in (.) do 枚举该目录树, %%I是每一个文件或目录，如果目录下存在svnserve.conf文件，证明这个目录是svn库，则热备。%~fI - 将 %I 扩展到一个完全合格的路径名，%~nI - 仅将 %I 扩展到一个文件名。
+"%~dp0\rar.exe" a %CUR_BACKUP_DIR%.rar %CUR_BACKUP_DIR% 
+%~dp0表示当前目录，是批命令里面特有的表示方法。将刚才整个目录的所用子目录【打包】成rar文件。  
+rd /s /q  %CUR_BACKUP_DIR%
+打包完之后【删除】目录CUR_BACKUP_DIR
+:end
+结束段，好习惯的写法。可有可无。
+
+使用方法：
+backup.bat d:\Resporities d:\SVNbackup
